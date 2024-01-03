@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 OBSERVAÇÕES
 
-1.Precisamos corrigir o bug que ocorre quando um jogador escolhe uma posição já ocupada 
-e ao invés de chamá-lo novamente para jogar alterna para o outro jogardor.
+1. Vamos desenvolver a funcionalidade de voltar jogada.
+
 
 */
 
@@ -31,8 +31,8 @@ public class JogoDaVelha {
                     
             do {
                 desenhoTabuleiro();
+                System.out.println(jogadas);
                 entradaJogadorX();
-                jogadas++;
         
                 // Verifica se o jogador X venceu
                 if (verificarVitoria()) {
@@ -41,13 +41,14 @@ public class JogoDaVelha {
                 }
         
                 if (jogadas == 9) {
+                    desenhoTabuleiro();
                     System.out.println("Empate!");
                     break;
                 }
         
                 desenhoTabuleiro();
+                System.out.println(jogadas);
                 entradaJogadorO();
-                jogadas++;
         
                 // Verifica se o jogador O venceu
                 if (verificarVitoria()) {
@@ -79,6 +80,8 @@ public class JogoDaVelha {
                 jogadas ++;
             } else {
                 System.out.println("Essa posição já está ocupada. Tente novamente.");
+                entradaJogadorO();
+
             }
         } while (tabuleiro[linhaO][colunaO] == ' ');
     }
@@ -100,6 +103,8 @@ public class JogoDaVelha {
                 jogadas ++;
             } else {
                 System.out.println("Essa posição já está ocupada. Tente novamente.");
+                entradaJogadorX();
+            
             }
         } while (tabuleiro[linhaX][colunaX] == ' ');
     }
@@ -114,6 +119,7 @@ public class JogoDaVelha {
             }
         }else{
             System.out.println("Essa posição já está ocupada. Tente novamente.");
+            
         }
     }
 
@@ -127,6 +133,7 @@ public class JogoDaVelha {
             }
         }else{
             System.out.println("Essa posição já está ocupada. Tente novamente.");
+            
         }
     }
 
