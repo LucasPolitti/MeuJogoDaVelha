@@ -1,10 +1,11 @@
 import java.util.Scanner;
+import java.util.Stack;
 
 /*
 
 OBSERVAÇÕES
 
-1. Vamos desenvolver a funcionalidade de voltar jogada.
+1. Vamos desenvolver a funcionalidade de voltar jogada. Precisamos que a funcionalidade de opções seja acessível no terminal durante o jogo.
 
 
 */
@@ -15,6 +16,7 @@ public class JogoDaVelha {
     Scanner scanner = new Scanner(System.in);
     boolean jogoEmAndamento = true;
     int jogadas = 0;
+    private Stack<int[]> historicoJogadas = new Stack<>();
 
     public JogoDaVelha(){
 
@@ -26,10 +28,32 @@ public class JogoDaVelha {
         }
     }
 
+    public void opçoesJogo(){
+
+        System.out.println("Escolha uma opção:");
+                System.out.println("1. Jogar jogo");
+                System.out.println("2. Desfazer a última jogada");
+
+                int opcao = scanner.nextInt();
+
+                switch (opcao) {
+                    case 1:
+                        jogarJogo();
+                        break;
+                    case 2:
+                        desfazerJogada();
+                        break;
+                    default:
+                        System.out.println("Opção inválida. Tente novamente.");
+                }
+    }
+    
+
 
     public void jogarJogo(){
                     
             do {
+
                 desenhoTabuleiro();
                 System.out.println(jogadas);
                 entradaJogadorX();
@@ -101,6 +125,7 @@ public class JogoDaVelha {
             if (tabuleiro[linhaX][colunaX] == ' ') {
                 jogadorX(linhaX, colunaX);
                 jogadas ++;
+                historicoJogadas.push(new int[]{linhaX, colunaX});
             } else {
                 System.out.println("Essa posição já está ocupada. Tente novamente.");
                 entradaJogadorX();
@@ -175,10 +200,26 @@ public class JogoDaVelha {
         }
         
         return false;
-
-        
-        
+     
     }
+
+
+    private void desfazerJogada() {
+        if (!historicoJogadas.isEmpty()) {
+            int[] ultimaJogada = historicoJogadas.pop();
+            int linha = ultimaJogada[0];
+            int coluna = ultimaJogada[1];
+
+            tabuleiro[linha][coluna] = ' ';
+            jogadas--;
+
+            System.out.println("Última jogada desfeita.");
+        } else {
+            System.out.println("Não há jogadas para desfazer.");
+        }
+    }
+
+    
     
 
 }
