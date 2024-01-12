@@ -7,6 +7,10 @@ OBSERVAÇÕES
 
 1. Vamos desenvolver a funcionalidade de voltar jogada. Precisamos que a funcionalidade de opções seja acessível no terminal durante o jogo.
 
+2. Verificar se a funcionalidade VerificarJogada não está duplicada.
+
+3. Mudar "Alguém venceu" por "X ou O venceu".
+
 
 */
 
@@ -27,113 +31,54 @@ public class JogoDaVelha {
             }
         }
     }
-
-    public void opçoesJogo(){
-
-        System.out.println("Escolha uma opção:");
-                System.out.println("1. Jogar jogo");
-                System.out.println("2. Desfazer a última jogada");
-
-                int opcao = scanner.nextInt();
-
-                switch (opcao) {
-                    case 1:
-                        jogarJogo();
-                        break;
-                    case 2:
-                        desfazerJogada();
-                        break;
-                    default:
-                        System.out.println("Opção inválida. Tente novamente.");
-                }
-    }
     
-
 
     public void jogarJogo(){
-                    
-            do {
 
-                desenhoTabuleiro();
-                System.out.println(jogadas);
-                entradaJogadorX();
-        
-                // Verifica se o jogador X venceu
-                if (verificarVitoria()) {
-                    System.out.println("Jogador X venceu!");
+        do {
+            desenhoTabuleiro();
+            System.out.println(jogadas);
+            System.out.println("Escolha uma opção:");
+            System.out.println("1. Fazer uma jogada");
+            System.out.println("2. Desfazer a última jogada");
+
+            int opcao = scanner.nextInt();
+
+            switch (opcao) {
+                case 1:
+                    fazerJogada();
                     break;
-                }
-        
-                if (jogadas == 9) {
+                case 2:
+                    desfazerJogada();
+                    break;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+
+            if (verificarVitoria()) {
+                if(jogadas % 2 == 1){
+
+
                     desenhoTabuleiro();
-                    System.out.println("Empate!");
-                    break;
+                    System.out.println(jogadas);
+                    System.out.println("X venceu!");
+                } else{
+                    
+                    desenhoTabuleiro();
+                    System.out.println(jogadas);
+                    System.out.println("O venceu!");
                 }
-        
-                desenhoTabuleiro();
-                System.out.println(jogadas);
-                entradaJogadorO();
-        
-                // Verifica se o jogador O venceu
-                if (verificarVitoria()) {
-                    System.out.println("Jogador O venceu!");
-                    break;
-                }
-        
-                if (jogadas == 9) {
-                    System.out.println("Empate!");
-                    break;
-                }
-            } while (jogoEmAndamento);
-        }
-        
-
-    public void entradaJogadorO() {
-        int linhaO;
-        int colunaO;
-    
-        do {
-            System.out.println("Jogador O, escolha uma linha:");
-            linhaO = scanner.nextInt();
-    
-            System.out.println("Jogador O, escolha uma coluna:");
-            colunaO = scanner.nextInt();
-    
-            if (tabuleiro[linhaO][colunaO] == ' ') {
-                jogadorO(linhaO, colunaO);
-                jogadas ++;
-            } else {
-                System.out.println("Essa posição já está ocupada. Tente novamente.");
-                entradaJogadorO();
+                break;
 
             }
-        } while (tabuleiro[linhaO][colunaO] == ' ');
-    }
-    
 
-    public void entradaJogadorX() {
-        int linhaX;
-        int colunaX;
-    
-        do {
-            System.out.println("Jogador X, escolha uma linha:");
-            linhaX = scanner.nextInt();
-    
-            System.out.println("Jogador X, escolha uma coluna:");
-            colunaX = scanner.nextInt();
-    
-            if (tabuleiro[linhaX][colunaX] == ' ') {
-                jogadorX(linhaX, colunaX);
-                jogadas ++;
-                historicoJogadas.push(new int[]{linhaX, colunaX});
-            } else {
-                System.out.println("Essa posição já está ocupada. Tente novamente.");
-                entradaJogadorX();
-            
+            if (jogadas == 9) {
+                System.out.println("Empate!");
+                break;
             }
-        } while (tabuleiro[linhaX][colunaX] == ' ');
-    }
 
+        } while (jogoEmAndamento);
+    }
 
     public void jogadorX(int linha, int coluna){
         if(tabuleiro[linha][coluna]== ' '){
@@ -217,6 +162,75 @@ public class JogoDaVelha {
         } else {
             System.out.println("Não há jogadas para desfazer.");
         }
+    }
+
+    private void fazerJogada() {
+
+        desenhoTabuleiro();
+        System.out.println(jogadas);
+
+        if (jogadas % 2 == 0) {
+            entradaJogadorX();
+        } else {
+            entradaJogadorO();
+        }
+
+            
+        }
+        
+
+    public void entradaJogadorO() {
+        int linhaO;
+        int colunaO;
+    
+        do {
+            System.out.println("Jogador O, escolha uma linha:");
+            linhaO = scanner.nextInt();
+    
+            System.out.println("Jogador O, escolha uma coluna:");
+            colunaO = scanner.nextInt();
+    
+            if (tabuleiro[linhaO][colunaO] == ' ') {
+                jogadorO(linhaO, colunaO);
+                jogadas ++;
+            } else {
+                System.out.println("Essa posição já está ocupada. Tente novamente.");
+                entradaJogadorO();
+
+            }
+        } while (tabuleiro[linhaO][colunaO] == ' ');
+
+        historicoJogadas.push(new int[]{linhaO, colunaO});
+
+
+    }
+    
+
+    public void entradaJogadorX() {
+        int linhaX;
+        int colunaX;
+    
+        do {
+            System.out.println("Jogador X, escolha uma linha:");
+            linhaX = scanner.nextInt();
+    
+            System.out.println("Jogador X, escolha uma coluna:");
+            colunaX = scanner.nextInt();
+    
+            if (tabuleiro[linhaX][colunaX] == ' ') {
+                jogadorX(linhaX, colunaX);
+                jogadas ++;
+                historicoJogadas.push(new int[]{linhaX, colunaX});
+            } else {
+                System.out.println("Essa posição já está ocupada. Tente novamente.");
+                entradaJogadorX();
+            
+            }
+
+        } while (tabuleiro[linhaX][colunaX] == ' ');
+
+        historicoJogadas.push(new int[]{linhaX, colunaX});
+
     }
 
     
