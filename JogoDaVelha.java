@@ -3,16 +3,10 @@ import java.util.Stack;
 
 /*
 
-OBSERVAÇÕES
-
-1. Vamos desenvolver a funcionalidade de voltar jogada. Precisamos que a funcionalidade de opções seja acessível no terminal durante o jogo.
-
-2. Verificar se a funcionalidade VerificarJogada não está duplicada.
-
-3. Mudar "Alguém venceu" por "X ou O venceu".
-
+Jogo da Velha em Java com a funcionalidade de voltar a jogada.
 
 */
+
 
 public class JogoDaVelha {
 
